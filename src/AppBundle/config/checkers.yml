@@ -1,0 +1,4 @@
+AppBundle\Service\PasswordChecker:
+    AppBundle\PasswordChecker\MinSizeChecker: 1
+    AppBundle\PasswordChecker\AsciiChecker: 1
+    AppBundle\PasswordChecker\AnagramChecker: 1

@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace AppBundle\Service;
 
-use AppBundle\PasswordChecker\MinSizeChecker;
+use AppBundle\PasswordChecker\PasswordCheckerInterface;
 
 class PasswordChecker
 {
     /**
-     * @var MinSizeChecker
+     * @var PasswordCheckerInterface[]
      */
-    private $minSizeChecker;
+    private $checkers;
 
-    public function __construct(MinSizeChecker $minSizeChecker)
-    {
-        $this->minSizeChecker = $minSizeChecker;
-    }
 
     /**
      * Check a password against all configured PasswordChecker classes
@@ -27,10 +23,20 @@ class PasswordChecker
      */
     public function check(string $password): ?string
     {
-        if (false === $this->minSizeChecker->check($password)) {
-            return $this->minSizeChecker->message();
+        foreach ($this->checkers as $checker){
+            if (false === $checker->check($password)) {
+                return $checker->message();
+            }
         }
-
         return null;
+    }
+
+
+    /**
+     * Method used by container to inject checkers
+     * @param PasswordCheckerInterface $checker
+     */
+    public function addChecker(PasswordCheckerInterface $checker){
+        $this->checkers[] = $checker;
     }
 }
