@@ -56,4 +56,13 @@ class AppKernel extends Kernel
         });
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
+    
+
+    protected function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->registerForAutoconfiguration(\AppBundle\PasswordChecker\PasswordCheckerInterface::class)
+            ->addTag('password_checker')
+        ;
+    }
 }
