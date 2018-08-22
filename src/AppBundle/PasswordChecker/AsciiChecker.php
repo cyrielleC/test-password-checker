@@ -11,7 +11,7 @@ class AsciiChecker implements PasswordCheckerInterface
      */
     public function check(string $password): bool
     {
-        return ( bool ) ! preg_match( '/[\\x80-\\xff]+/' , $password );
+        return 'ASCII' === mb_detect_encoding($password, 'ASCII', true);
     }
 
     /**
